@@ -1,0 +1,9 @@
+.\ys-f1mini\cjson_utils.o: ..\..\..\cJSON-master\cJSON_Utils.c
+.\ys-f1mini\cjson_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
+.\ys-f1mini\cjson_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\ys-f1mini\cjson_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\ys-f1mini\cjson_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\ys-f1mini\cjson_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\ys-f1mini\cjson_utils.o: ..\..\..\cJSON-master\cJSON_Utils.h
+.\ys-f1mini\cjson_utils.o: ..\..\..\cJSON-master\cJSON.h
+.\ys-f1mini\cjson_utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
