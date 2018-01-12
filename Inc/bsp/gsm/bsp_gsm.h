@@ -67,7 +67,7 @@ uint8_t GSM_gprs_link_close(void); //IP链接断开
 uint8_t GSM_gprs_shut_close(void); //关闭场景
 uint8_t	PostGPRS(void);
 char *Return_result(void); //获取服务器下下发内容
-int split(char dst[][80], char* str, const char* spl);
+int split(char dst[][100], char* str, const char* spl);
 #endif  /* __BSP_GSM_H__ */
 
 /******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/

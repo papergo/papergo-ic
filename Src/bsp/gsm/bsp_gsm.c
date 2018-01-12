@@ -768,7 +768,7 @@ char * GSM_http_get(char * serverip)
   redata = Return_result();
 	GSM_tx_printf("AT+HTTPREAD\r");   
 	GSM_DELAY(100);
-	char dst[10][80];
+	char dst[10][100];
 	int cnt = split(dst, redata, "\n");
 	redata = dst[2];
 	return redata;
@@ -801,7 +801,7 @@ char * GSM_http_post(char * serverip ,char * params)
   redata = Return_result();
 	GSM_tx_printf("AT+HTTPREAD\r");   
 	GSM_DELAY(100);
-	char dst[10][80];
+	char dst[10][100];
 	int cnt = split(dst, redata, "\n");
 	redata = dst[2];
 	return redata;
@@ -860,7 +860,7 @@ char * Return_result(void)
 }
 
 //
-int split(char dst[][80], char* str, const char* spl)
+int split(char dst[][100], char* str, const char* spl)
 {
     int n = 0;
     char *result = NULL;

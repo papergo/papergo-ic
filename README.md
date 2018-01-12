@@ -1,1 +1,0 @@
-# papergo-ic

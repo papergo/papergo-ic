@@ -29,7 +29,9 @@
 #include <stdlib.h>
 
 /* 私有类型定义 --------------------------------------------------------------*/
+
 /* 私有宏定义 ----------------------------------------------------------------*/
+static  char *  PAPER_RESULT_PREFIX = "http://api.paper-go.com/paper_result";
 
 /* 扩展变量 ------------------------------------------------------------------*/
 /* 私有函数原形 --------------------------------------------------------------*/
@@ -157,6 +159,7 @@ int main(void)
 			      IsRead=readmessage(newmessadd,namenum,str);
 						if(IsRead)
 						{
+	               GSM_CLEAN_RX();//清缓存						
 						     printf("\n new msg content = %s \n\r",str);
 							  
 							   cJSON *json,*json_value;
@@ -164,56 +167,54 @@ int main(void)
 							  
 						     if (json != NULL)
 							   {  
-									   char* trade_no ;
+									   char* trade_no,size,per ;
                      printf("\n resole json \n\r");
   									 json_value = cJSON_GetObjectItem(json ,"trade_no");  
 									   if( json_value->type == cJSON_String )  
 									   {  
-									  	    printf("trade_no:%s\r\n",json_value->valuestring); 
 											    trade_no = json_value->valuestring;
+									  	    printf("trade_no:%s\r\n",trade_no); 
+											    
 									   }
 									   json_value = cJSON_GetObjectItem(json ,"size"); 
 										 if( json_value->type == cJSON_Number )  
 									   {  
-										     printf("size:%d\r\n",json_value->valueint);  
+											    size = json_value->valueint;
+										      printf("size:%d\r\n",size);  
+											    
 									   }
 										 json_value = cJSON_GetObjectItem(json ,"per");  
 										 if( json_value->type == cJSON_Number )  
 									   {  
-										     printf("per:%d\r\n",json_value->valueint);  
+											    per = json_value->valueint;			
+										      printf("per:%d\r\n",per);
+                          							 
 									   }
-									   // 释放内存空间 
-										 //cJSON_Delete(json_value);
-									   cJSON_Delete(json);
+										 char url[100];
+										 strcpy (url,PAPER_RESULT_PREFIX);
+										 strcat(url,"?trade_no=");
+										 strcat (url,trade_no);
+										 strcat (url,"&result=1");
 										 
+									   
 										 //********************begin****************************
 										 //执行出纸操作
 										 
 										 //********************begin****************************
 										 
 										 GSM_http_init();//http初始化
-										 
-//										 char *redata;
-//										 redata = GSM_http_get("http://api.paper-go.com/test3/123456");
-//										 printf("\n服务器返回的参数：%s\n",redata);
-//										 GSM_CLEAN_RX();//清除接收缓存
-									   
-										 // 创建JSON Object  
-										 cJSON *notifyJson = cJSON_CreateObject();  
-										 // 加入节点（键值对），节点名称为value，节点值为123.4  
-										 cJSON_AddStringToObject(notifyJson,"trade_no",trade_no);
-										 cJSON_AddStringToObject(notifyJson,"result","1");  
-										 char *notify = cJSON_Print(notifyJson);  
-										 char *redata2;
-										 redata2 = GSM_http_post("http://api.paper-go.com/paper_result",notify);
-										 printf("\npost服务器返回的参数：%s\n",redata2);
-										 // 释放内存  
-										 cJSON_Delete(notifyJson);  
-										 free(notify);
+										 printf("\nurl ==== %s\n",url);
+										 char *redata;
+										 redata = GSM_http_get(url);
+										 printf("\n服务器返回的参数：%s\n",redata);
 										 GSM_CLEAN_RX();//清除接收缓存
 										 GSM_http_end();
 										 
-										 
+										 // 释放内存空间 
+										 //cJSON_Delete(json_value);
+									   cJSON_Delete(json);
+										 //free(json_value);
+										 //free(json);
 							   }
 						 }
 						 GSM_tx_printf("AT+CMGD=%d\r",newmessadd);         // 删除短信
@@ -222,66 +223,6 @@ int main(void)
 			   }
      }
 
-    
-//	  char *redata;
-//	  redata = GSM_http_get("http://api.paper-go.com/test3/123456");
-//	  printf("\n服务器返回的参数：%s\n",redata);
-//	  GSM_CLEAN_RX();//清除接收缓存
-//	
-//	
-//	  char *redata2;
-//	  redata2 = GSM_http_post("http://api.paper-go.com/test_post2","{\"code\":654321}");
-//	  printf("\npost服务器返回的参数：%s\n",redata2);
-//	  GSM_CLEAN_RX();//清除接收缓存
-//	  GSM_http_end();
-//	
-//	
-//    cJSON * pJson = cJSON_Parse(redata);
-//	  if(pJson != NULL){
-//	      cJSON * pSub = cJSON_GetObjectItem(pJson, "result");
-//		    if(pSub != NULL){
-//			      printf("\nJSON读取数据: result == %d\n",pSub->valueint);
-//		    }
-//		    pSub = cJSON_GetObjectItem(pJson, "status");
-//		    if(pSub != NULL){
-//			      pJson = cJSON_GetObjectItem(pSub, "code");
-//			      printf("\nJSON读取数据: code == %d\n",pJson->valueint);
-//			      pJson = cJSON_GetObjectItem(pSub, "description");
-//			      printf("\nJSON读取数据: des == %s\n",pJson->valuestring);
-//					
-//			      //cJSON_Delete(pSubSub);
-//		    }
-//		    cJSON_Delete(pSub);
-//    }
-//	  cJSON_Delete(pJson);
-//	
-//	  GSM_CLEAN_RX();//清除接收缓存
-//	
-//		/* 无限循环 */
-//    while(1)
-//	 {
-//		GSM_DELAY(1000);
-//		newmessadd=IsReceiveMS();	
-////		if(newmessadd != 0)
-////		    printf("\n new msg address ==== %c\n\r",newmessadd);
-//		if(newmessadd)
-//		{    
-//		    GSM_tx_printf("AT+CSCS=\"8859-1\"\r");     //"GSM"字符集
-//		    GSM_DELAY(500);
-//			IsRead=readmessage(newmessadd,namenum,str);			
-////			printf("newmessadd=%d,IsRead:%d\n",newmessadd,IsRead);
-//			if(IsRead)
-//			{
-//				//hexuni2gbk(namenum,namegbk);	
-//				//hexuni2gbk(str,gbkstr);						
-//				//printf("\n新短信:\n发件人:%s\n内容:%s\n\r",namegbk,gbkstr);
-//				printf("\n new msg content = %s \n\r",str);
-//			}
-//		    GSM_tx_printf("AT+CMGD=%d\r",newmessadd);         // 删除短信
-//		    GSM_DELAY(100); 
-//		    newmessadd=0;
-//		}
-//    }
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
