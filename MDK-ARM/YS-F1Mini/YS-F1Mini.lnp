@@ -57,6 +57,7 @@
 ".\ys-f1mini\bsp_gsm.o"
 ".\ys-f1mini\ys_936.o"
 --library_type=microlib --strict --scatter ".\YS-F1Mini\YS-F1Mini.sct"
+
 --diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\YS-F1Mini\YS-F1Mini.map" -o .\YS-F1Mini\YS-F1Mini.axf
